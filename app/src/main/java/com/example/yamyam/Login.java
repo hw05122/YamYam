@@ -2,7 +2,7 @@ package com.example.yamyam;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
@@ -12,7 +12,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.DataInputStream;
-import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -25,7 +24,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     double initTime;
     boolean isRunning;
     Socket memberSocket;
-    String userId, userPw;
+    public String userId, userPw;
+    public static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,13 +41,15 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
         btnRegister = (Button) findViewById(R.id.btnRegister);
         btnRegister.setOnClickListener(this);
+
+        context = this;
     }
 
     public void onClick(View view) {
         if (view == btnLogin) {
             userId = etId.getText().toString();
             userPw = etPw.getText().toString();
-            if (userId.isEmpty() || userPw.isEmpty()) {//서버에 접속
+            if (userId.isEmpty() || userPw.isEmpty()) {
                 Toast.makeText(getApplicationContext(), "아이디 또는 비밀번호를 입력하세요.", Toast.LENGTH_SHORT).show();
 
             } else {
