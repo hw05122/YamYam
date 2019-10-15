@@ -53,13 +53,15 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
 
     public void onClick(View view) {
         if (view == btnChat) {
-
+            Intent intent = new Intent(getApplicationContext(), Chat.class);
+            startActivity(intent);
         } else if (view == btnMsg) {
 
         } else if (view == btnGrow) {
 
         } else if (view == btnCheck) {
-
+            Intent intent = new Intent(getApplicationContext(), Attendance.class);
+            startActivity(intent);
         } else if (view == btnPoint) {
 
         } else if (view == btnSetting) {

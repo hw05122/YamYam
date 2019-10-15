@@ -3,7 +3,7 @@
     package="com.example.yamyam">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -12,7 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Setting"></activity>
+        <activity android:name=".Attendance"></activity>
+        <activity android:name=".Mypage" />
+        <activity android:name=".Chatting" />
+        <activity android:name=".Chat" />
+        <activity android:name=".Setting" />
         <activity android:name=".Register" />
         <activity android:name=".Main" />
         <activity android:name=".Login" />

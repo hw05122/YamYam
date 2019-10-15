@@ -46,13 +46,14 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     }
 
     public void onClick(View view) {
-        if (view == btnLogin) {
+        if (view == btnLogin) {//로그인 버튼이 눌리면
             userId = etId.getText().toString();
             userPw = etPw.getText().toString();
+
             if (userId.isEmpty() || userPw.isEmpty()) {
                 Toast.makeText(getApplicationContext(), "아이디 또는 비밀번호를 입력하세요.", Toast.LENGTH_SHORT).show();
 
-            } else {
+            } else {//사용자가 무언가 입력을 한채 로그인 눌렀다면 LoginThread실행
                 LoginThread thread = new LoginThread();
                 thread.start();
             }
@@ -74,6 +75,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
+    //LoginThread는 자바로 dos.writeUTF()를 통해 userId와 userPw를 보내줌
+    //보낼 msg들은 무조건 " "띄어쓰기 해서 보내기 (token으로 나누기 위해서)
+    //그리고나서 LoginCheckThread 실행
     class LoginThread extends Thread {
         public void run() {
             try {
@@ -100,6 +104,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
+    //LoginCheckThread는 자바에서 보낸문자열을 dis.readUTF()를 통해 받음
+    //자바를 통해 디비내용을 체크한 뒤 msg를 보내줘서 그에 따른 실행이 되도록
     class LoginCheckThread extends Thread {
         Socket socket;
         DataInputStream dis;
