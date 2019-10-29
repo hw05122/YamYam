@@ -26,6 +26,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     Socket memberSocket;
     public String userId, userPw;
     public static Context context;
+    public static String url = "192.168.0.8";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +82,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     class LoginThread extends Thread {
         public void run() {
             try {
-                final Socket socket = new Socket("192.168.1.182", 30000);
+                final Socket socket = new Socket(url, 30000);
                 memberSocket = socket;
 
                 OutputStream os = socket.getOutputStream();

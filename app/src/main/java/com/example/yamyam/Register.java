@@ -161,7 +161,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
     class RegisterThread extends Thread {
         public void run() {
             try {
-                final Socket socket = new Socket("192.168.1.182", 30000);
+                final Socket socket = new Socket(Login.url, 30000);
                 memberSocket = socket;
 
                 OutputStream os = socket.getOutputStream();
