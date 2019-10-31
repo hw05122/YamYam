@@ -26,7 +26,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     Socket memberSocket;
     public String userId, userPw;
     public static Context context;
-    public static String url = "192.168.0.8";
+    public static String url = "165.229.125.232";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

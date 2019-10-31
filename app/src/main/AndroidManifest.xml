@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Attendance"></activity>
+        <activity android:name=".Cal"></activity>
+        <activity android:name=".Attendance" />
         <activity android:name=".Mypage" />
         <activity android:name=".Chatting" />
         <activity android:name=".Chat" />
