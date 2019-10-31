@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,7 +22,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     Button btnLogin, btnRegister;
     public static EditText etId, etPw;
     int loginCnt = 0;
-    double initTime;
+    double initTime1, initTime2;
     boolean isRunning;
     Socket memberSocket;
     public String userId, userPw;
@@ -139,11 +140,11 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
                                 if (loginCnt == 4) {//4번째 실패부터 30초 기다려야함
                                     Toast.makeText(getApplicationContext(), "30초 후에 재입력하세요", Toast.LENGTH_SHORT).show();
-                                    initTime = System.currentTimeMillis();
+                                    initTime1 = System.currentTimeMillis();
                                 } else if (loginCnt > 4) {
-                                    if (System.currentTimeMillis() - initTime < 30000) {
-                                        Toast.makeText(getApplicationContext(), 30 - (int) ((System.currentTimeMillis() - initTime) / 1000) + "초 남았습니다.", Toast.LENGTH_SHORT).show();
-                                    } else if (System.currentTimeMillis() - initTime >= 30000) {
+                                    if (System.currentTimeMillis() - initTime1 < 30000) {
+                                        Toast.makeText(getApplicationContext(), 30 - (int) ((System.currentTimeMillis() - initTime1) / 1000) + "초 남았습니다.", Toast.LENGTH_SHORT).show();
+                                    } else if (System.currentTimeMillis() - initTime1 >= 30000) {
                                         loginCnt = 1;
                                         Toast.makeText(getApplicationContext(), "아이디 또는 비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
                                     }
@@ -158,5 +159,22 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            if(System.currentTimeMillis() - initTime2 > 3000){//처음 누른 상태
+                Toast.makeText(getApplicationContext(),"종료하려면 한 번 더 눌러주세요",Toast.LENGTH_SHORT).show();
+                initTime2 = System.currentTimeMillis();
+                return true;
+            }
+            else{//3초이내에 다시 누름
+                finish();
+                return true;
+            }
+        }
+
+        return false;
     }
 }

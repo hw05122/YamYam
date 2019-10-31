@@ -11,12 +11,15 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +36,7 @@ public class Chatting extends AppCompatActivity implements View.OnClickListener 
     Button btnSend;
     LinearLayout ll;
     ScrollView sv;
+    AlertDialog starD;
 
     boolean isConnect = false, isRunning = false;
     Socket memberSocket;
@@ -50,21 +54,21 @@ public class Chatting extends AppCompatActivity implements View.OnClickListener 
         ll = (LinearLayout) findViewById(R.id.ll);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(Chatting.this);
-        builder.setTitle("상담하기").setMessage("상담을 시작하시겠습니까?").setIcon(R.mipmap.ic_launcher);
+        builder.setTitle("상담 시작하기").setMessage("상담을 시작하시겠습니까?").setIcon(R.drawable.logo4);
         builder.setCancelable(false);
-        builder.setPositiveButton("네", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                ConnectionThread thread = new ConnectionThread();
-                thread.start();
-            }
-        });
-        builder.setNegativeButton("아니요", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("아니요", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(getApplicationContext(), Chat.class);
                 startActivity(intent);
                 finish();
+            }
+        });
+        builder.setNegativeButton("네", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ConnectionThread thread = new ConnectionThread();
+                thread.start();
             }
         });
         builder.show();
@@ -230,9 +234,71 @@ public class Chatting extends AppCompatActivity implements View.OnClickListener 
         int id = item.getItemId();
 
         if (id == R.id.itemOut) {
-            Toast.makeText(getApplicationContext(), "나가시겠습니까?", Toast.LENGTH_SHORT).show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(Chatting.this);
+            builder.setTitle("상담방 나가기").setMessage("상담방을 나가겠습니까?").setIcon(R.drawable.logo4);
+            builder.setCancelable(false);
+            builder.setPositiveButton("아니요", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            builder.setNegativeButton("네", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    AlertDialog.Builder starB = new AlertDialog.Builder(Chatting.this);
+                    starB.setTitle("평가하기").setIcon(R.drawable.logo4);
+                    LayoutInflater inflater = (LayoutInflater)getSystemService(LAYOUT_INFLATER_SERVICE);
+                    View root = inflater.inflate(R.layout.star,null);
+                    starB.setView(root);
+
+                    starB.setPositiveButton("취소", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    });
+
+                    starB.setNegativeButton("확인", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            final TextView tvResult = (TextView)findViewById(R.id.tvResult);
+                            RatingBar ratingBar = (RatingBar)findViewById(R.id.ratingBar);
+                            ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                                @Override
+                                public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                                    tvResult.setText(String.valueOf(rating));
+                                }
+                            });
+
+                            if(tvResult.getText().toString().equals("0")){
+                                Toast.makeText(getApplicationContext(),"평가를 완료해주세요",Toast.LENGTH_SHORT).show();
+                            }else{
+                                Intent intent = new Intent(getApplicationContext(),Chat.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }
+                    });
+
+                    starD = starB.create();
+                    starD.show();
+                }
+            });
+            builder.show();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            Intent intent = new Intent(getApplicationContext(), Chat.class);
+            startActivity(intent);
+            finish();
+        }
+
+        return false;
     }
 }

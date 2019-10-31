@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class Chat extends AppCompatActivity {
     Button btnCurrent, btnTotal, btnNew, btnSearch, btnOption, btnList, btnChatting, btnAuto, btnMy;
@@ -14,6 +16,7 @@ public class Chat extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        setTitle("상담하기");
 
         btnCurrent = (Button)findViewById(R.id.btnCurrent);
         btnTotal = (Button)findViewById(R.id.btnTotal);
@@ -49,6 +52,7 @@ public class Chat extends AppCompatActivity {
         else if(view == btnChatting){
             Intent intent = new Intent(getApplicationContext(),Chatting.class);
             startActivity(intent);
+            finish();
         }
         else if(view == btnAuto){
 
@@ -56,6 +60,18 @@ public class Chat extends AppCompatActivity {
         else if(view == btnMy){
             Intent intent = new Intent(getApplicationContext(),Mypage.class);
             startActivity(intent);
+            finish();
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            Intent intent = new Intent(getApplicationContext(), Main.class);
+            startActivity(intent);
+            finish();
+        }
+
+        return false;
     }
 }

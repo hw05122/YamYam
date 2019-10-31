@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -68,5 +69,14 @@ public class Main extends AppCompatActivity implements View.OnClickListener {
             Intent intent = new Intent(getApplicationContext(), Setting.class);
             startActivity(intent);
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            Toast.makeText(getApplicationContext(),"설정에서 로그아웃을 눌러주세요",Toast.LENGTH_SHORT).show();
+        }
+
+        return false;
     }
 }

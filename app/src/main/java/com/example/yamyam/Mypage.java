@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -84,5 +85,16 @@ public class Mypage extends AppCompatActivity implements View.OnClickListener{
         else if(view == btnAuto){
 
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            Intent intent = new Intent(getApplicationContext(), Chat.class);
+            startActivity(intent);
+            finish();
+        }
+
+        return false;
     }
 }
