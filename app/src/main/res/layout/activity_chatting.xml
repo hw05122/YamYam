@@ -7,24 +7,19 @@
     tools:context=".Chatting"
     android:orientation="vertical">
 
-    <LinearLayout
+    <ScrollView
+        android:id="@+id/sv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:orientation="horizontal"
-        android:background="#fac5f0">
+        android:background="@color/colorPrimaryDark">
 
-        <ScrollView
+        <LinearLayout
+            android:id="@+id/ll"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/txtMsg"
-                android:text=""/>
-        </ScrollView>
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical" />
+    </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,7 +29,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/editMsg"
+            android:id="@+id/etMsg"
             android:layout_weight="0.5"
             android:ems="10"
             android:hint="메세지를 작성해 주세요"/>
@@ -44,6 +39,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/btnSend"
             android:layout_weight="2"
-            android:text="전송"/>
+            android:text="전송"
+            android:onClick="onClick"/>
     </LinearLayout>
 </LinearLayout>

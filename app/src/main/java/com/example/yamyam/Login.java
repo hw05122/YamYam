@@ -19,14 +19,14 @@ import java.net.Socket;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
     Button btnLogin, btnRegister;
-    EditText etId, etPw;
+    public static EditText etId, etPw;
     int loginCnt = 0;
     double initTime;
     boolean isRunning;
     Socket memberSocket;
     public String userId, userPw;
     public static Context context;
-    public static String url = "165.229.125.232";
+    public static String url = "192.168.0.9";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
