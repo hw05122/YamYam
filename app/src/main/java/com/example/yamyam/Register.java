@@ -186,4 +186,15 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
 
         return false;
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            Intent intent = new Intent(getApplicationContext(), Login.class);
+            startActivity(intent);
+            finish();
+        }
+
+        return false;
+    }
 }
