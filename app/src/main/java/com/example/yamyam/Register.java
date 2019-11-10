@@ -8,12 +8,21 @@ import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -22,13 +31,10 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 public class Register extends AppCompatActivity implements View.OnClickListener {
-    EditText etName, etId, etPw1, etPw2, etNick, etYear, etMonth, etDay;
-    Button btnIdChk, btnNickChk, btnOk, btnCancel;
-    RadioGroup rbtnGroup;
-    ImageView ivPwChk;
-    boolean isRunning;
-    Socket memberSocket;
-    String userName, userId, userPw1, userPw2, userNick, userYear, userMonth, userDay;
+    private EditText etName, etId, etPw1, etPw2, etNick, etYear, etMonth, etDay;
+    private Button btnIdChk, btnNickChk, btnOk, btnCancel;
+    private RadioGroup rbtnGroup;
+    private String userName, userId, userPw1, userPw2, userNick, userYear, userMonth, userDay, userGen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +51,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         etPw2 = (EditText) findViewById(R.id.etPw2);
         etPw1.setTransformationMethod(new PasswordTransformationMethod());
         etPw2.setTransformationMethod(new PasswordTransformationMethod());
-        ivPwChk = (ImageView) findViewById(R.id.ivPwChk);
+        final ImageView ivPwChk = (ImageView) findViewById(R.id.ivPwChk);
         etPw1.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -92,9 +98,9 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 if (i == R.id.rbtnMan) {
-
+                    userGen = "M";
                 } else if (i == R.id.rbtnWoman) {
-
+                    userGen = "F";
                 }
             }
         });
@@ -127,101 +133,57 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             userId = etId.getText().toString();
             userPw1 = etPw1.getText().toString();
             userPw2 = etPw2.getText().toString();
-            userNick = etNick.getText().toString();
             userYear = etYear.getText().toString();
             userMonth = etMonth.getText().toString();
             userDay = etDay.getText().toString();
-            //성별 체크안할 시 고려하기!!!!!!
-            //비번X일 경우 회원가입실패뜨도록
-            //생년월일은 숫자
-            if (userName.isEmpty() || userId.isEmpty() || userPw1.isEmpty() || userPw2.isEmpty() || userNick.isEmpty() || userYear.isEmpty() || userMonth.isEmpty() || userDay.isEmpty()) {
-                Toast.makeText(getApplicationContext(), "회원가입 형식이 올바르지 않습니다.", Toast.LENGTH_SHORT).show();
+            userNick = etNick.getText().toString();
+
+            if ((userPw1.equals(userPw2))&&(userName != null && !userName.isEmpty()) && (userId != null && !userId.isEmpty()) && (userPw1 != null && !userPw1.isEmpty()) && (userPw2 != null && !userPw2.isEmpty()) &&(userNick != null && !userNick.isEmpty()) && (userGen != null && !userGen.isEmpty()) && (userYear != null && !userYear.isEmpty()) && (userMonth != null && !userMonth.isEmpty()) && (userDay != null && !userDay.isEmpty())) {
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            boolean success = jsonObject.getBoolean("success");
+                            if(success){ //회원등록에 성공한 경우
+                                Toast.makeText(getApplicationContext(),"회원 등록에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(Register.this, Login.class);
+                                startActivity(intent);
+                                finish();
+                            } else { //회원등록에 실패한 경우
+                                Toast.makeText(getApplicationContext(),"회원 등록에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                };
+
+                //서버로 Volley를 이용해서 요청을 함
+                RegisterRequest registerRequest = new RegisterRequest(userName, userId, userPw1, userYear, userMonth, userDay, userNick, userGen, responseListener);
+                RequestQueue queue = Volley.newRequestQueue(Register.this);
+                queue.add(registerRequest);
             } else {
-                RegisterThread thread = new RegisterThread();
-                thread.start();
+                Toast.makeText(getApplicationContext(), "회원가입 형식이 올바르지 않습니다.", Toast.LENGTH_SHORT).show();
             }
-        } else if (view == btnCancel) {
+        }
+        else if (view == btnCancel) {
             Intent intent = new Intent(getApplicationContext(), Login.class);
             startActivity(intent);
             finish();
         }
     }
 
-    protected void onDestroy() {
-        super.onDestroy();
-        try {
-            memberSocket.close();
-            isRunning = false;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    class RegisterThread extends Thread {
-        public void run() {
-            try {
-                final Socket socket = new Socket(Login.url, 30000);
-                memberSocket = socket;
-
-                OutputStream os = socket.getOutputStream();
-                DataOutputStream dos = new DataOutputStream(os);
-
-                dos.writeUTF("Register "+userId+" "+userPw1);
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        isRunning = true;
-
-                        RegisterCheckThread thread = new RegisterCheckThread(socket);
-                        thread.start();
-                    }
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    class RegisterCheckThread extends Thread{
-        Socket socket;
-        DataInputStream dis;
-
-        public RegisterCheckThread(Socket socket){
-            try {
-                this.socket = socket;
-                InputStream is = socket.getInputStream();
-                dis = new DataInputStream(is);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            Intent intent = new Intent(getApplicationContext(), Login.class);
+            startActivity(intent);
+            finish();
         }
 
-        public void run(){
-            try{
-                while(isRunning){
-                    final String msg = dis.readUTF();
-
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if(Integer.parseInt(msg) == 1){//회원가입성공
-                                Toast.makeText(getApplicationContext(), "회원가입에 성공하였습니다.", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(getApplicationContext(), Login.class);
-                                startActivity(intent);
-                                finish();
-                            }
-                            else if(Integer.parseInt(msg) == 2){//회원가입실패
-                                Toast.makeText(getApplicationContext(), "회원가입에 실패하였습니다.", Toast.LENGTH_SHORT).show();
-
-                            }
-                        }
-                    });
-                }
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        }
+        return false;
     }
 }

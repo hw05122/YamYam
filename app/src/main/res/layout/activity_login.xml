@@ -70,16 +70,24 @@
                 android:layout_height="wrap_content"
                 android:text="로그인"
                 android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#ffffff"
+                android:background="@color/colorPrimary"
                 android:id="@+id/btnLogin"
-                android:onClick="onClick"/>
+                android:onClick="onClick"
+                android:layout_margin="3dp"/>
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="회원가입"
                 android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#ffffff"
+                android:background="@color/colorPrimary"
                 android:id="@+id/btnRegister"
-                android:onClick="onClick"/>
+                android:onClick="onClick"
+                android:layout_margin="3dp"/>
         </LinearLayout>
     </LinearLayout>
 

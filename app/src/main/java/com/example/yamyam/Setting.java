@@ -14,12 +14,21 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -28,13 +37,9 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 public class Setting extends AppCompatActivity implements View.OnClickListener {
-    Switch swChat, swMsg, swGrow;
-    Button btnLogout, btnEnd;
-    View viewDigpw;
-    EditText etPw;
-    boolean isRunning;
-    Socket memberSocket;
-    String userId, userPw;
+    private Switch swChat, swMsg;
+    private Button btnLogout, btnEnd;
+    private String userPw;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,36 +114,6 @@ public class Setting extends AppCompatActivity implements View.OnClickListener {
             }
         });
 
-        swGrow = (Switch) findViewById(R.id.swGrow);
-        swGrow.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        int importance = NotificationManager.IMPORTANCE_HIGH;
-                        String Noti_Channel_ID = "Noti3";
-                        String Noti_Channel_Group_ID = "Noti_Group3";
-
-                        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                        NotificationChannel notificationChannel = new NotificationChannel(Noti_Channel_ID, Noti_Channel_Group_ID, importance);
-
-                        if (notificationManager.getNotificationChannel(Noti_Channel_ID) != null) {//채널존재
-                        } else {//채널없어서 만듦
-                            notificationManager.createNotificationChannel(notificationChannel);
-                        }
-
-                        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), Noti_Channel_ID)
-                                .setLargeIcon(null).setSmallIcon(R.drawable.logo4)
-                                .setWhen(System.currentTimeMillis()).setShowWhen(true).
-                                        setAutoCancel(true).setPriority(NotificationCompat.PRIORITY_MAX)
-                                .setContentTitle("yamyam이가 시들고있어요");
-
-                        notificationManager.notify(0, builder.build());
-                    }
-                }
-            }
-        });
-
         btnLogout = (Button) findViewById(R.id.btnLogout);
         btnLogout.setOnClickListener(this);
         btnEnd = (Button) findViewById(R.id.btnEnd);
@@ -157,24 +132,52 @@ public class Setting extends AppCompatActivity implements View.OnClickListener {
             digEnd.setNegativeButton("네", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    viewDigpw = (View)View.inflate(Setting.this,R.layout.digpw,null);
-                    etPw = (EditText)viewDigpw.findViewById(R.id.etPw);
-                    etPw.setTransformationMethod(new PasswordTransformationMethod());
-
                     AlertDialog.Builder digPw = new AlertDialog.Builder(Setting.this);
                     digPw.setTitle("비밀번호를 입력하세요");
-                    digPw.setView(viewDigpw);
+                    LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+                    View root = inflater.inflate(R.layout.digpw, null);
+                    digPw.setView(root);
+
+                    final EditText etPw = (EditText)root.findViewById(R.id.etPw);
+                    etPw.setTransformationMethod(new PasswordTransformationMethod());
+
                     digPw.setNegativeButton("확인", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             userPw = etPw.getText().toString();
-                            userId =((Login)Login.context).userId;
+                            String uId = Login.uId;
+                            String uPw = Login.uPw;
 
-                            if (userPw.isEmpty()) {//서버에 접속
+                            if (userPw.isEmpty()) {
                                 Toast.makeText(getApplicationContext(), "비밀번호를 입력하세요.", Toast.LENGTH_SHORT).show();
+                            } else if (userPw.equals(uPw)) {
+                                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        try {
+                                            JSONObject jsonObject = new JSONObject(response);
+                                            boolean success = jsonObject.getBoolean("success");
+                                            if(success){
+                                                Toast.makeText(getApplicationContext(), "탈퇴되었습니다.", Toast.LENGTH_SHORT).show();
+                                                Intent intent = new Intent(Setting.this, Login.class);
+                                                startActivity(intent);
+                                            } else {
+                                                Toast.makeText(getApplicationContext(),"탈퇴실패하였습니다.", Toast.LENGTH_SHORT).show();
+                                                return;
+                                            }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+                                };
+
+                                EndRequest endRequest = new EndRequest(uId, uPw, responseListener);
+                                RequestQueue queue = Volley.newRequestQueue(Setting.this);
+                                queue.add(endRequest);
+
                             } else {
-                                 EndThread thread = new EndThread();
-                                 thread.start();
+                                Toast.makeText(getApplicationContext(), "비밀번호가 일치하지않습니다.", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -187,82 +190,14 @@ public class Setting extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
-    protected void onDestroy() {
-        super.onDestroy();
-        try {
-            memberSocket.close();
-            isRunning = false;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    class EndThread extends Thread{
-        public void run() {
-            try {
-                final Socket socket = new Socket(Login.url, 30000);
-                memberSocket = socket;
-
-                OutputStream os = socket.getOutputStream();
-                DataOutputStream dos = new DataOutputStream(os);
-
-                dos.writeUTF("End " + userId + " " + userPw);
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        isRunning = true;
-
-                        EndCheckThread thread = new EndCheckThread(socket);
-                        thread.start();
-                    }
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    class EndCheckThread extends Thread {
-        Socket socket;
-        DataInputStream dis;
-
-        public EndCheckThread(Socket socket) {
-            try {
-                this.socket = socket;
-                InputStream is = socket.getInputStream();
-                dis = new DataInputStream(is);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            Intent intent = new Intent(getApplicationContext(), Main.class);
+            startActivity(intent);
+            finish();
         }
 
-        public void run() {
-            try {
-                while (isRunning) {
-                    final String msg = dis.readUTF();
-
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (Integer.parseInt(msg) == 1) {
-                                Toast.makeText(getApplicationContext(),"탈퇴되었습니다.",Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(getApplicationContext(), Login.class);
-                                startActivity(intent);
-                                finish();
-                            }else if(Integer.parseInt(msg) == 2){
-                                Toast.makeText(getApplicationContext(), "비밀번호가 일치하지않습니다.", Toast.LENGTH_SHORT).show();
-                            }
-                            else if (Integer.parseInt(msg) == 3) {//탈퇴실패
-                                Toast.makeText(getApplicationContext(),"탈퇴하지 못하였습니다.",Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        return false;
     }
 }

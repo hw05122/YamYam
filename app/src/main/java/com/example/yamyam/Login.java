@@ -2,14 +2,26 @@ package com.example.yamyam;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -18,15 +30,12 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
-    Button btnLogin, btnRegister;
-    EditText etId, etPw;
-    int loginCnt = 0;
-    double initTime;
-    boolean isRunning;
-    Socket memberSocket;
-    public String userId, userPw;
-    public static Context context;
-    public static String url = "192.168.0.8";
+    private Button btnLogin, btnRegister;
+    private EditText etId, etPw;
+    private int loginCnt = 0;
+    private double initTime, initTime2;
+    private String userId, userPw;
+    public static String uName, uId, uPw, uYear,uMonth,uDay,uNick,uGen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +51,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
         btnRegister = (Button) findViewById(R.id.btnRegister);
         btnRegister.setOnClickListener(this);
-
-        context = this;
     }
 
     public void onClick(View view) {
@@ -54,89 +61,30 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             if (userId.isEmpty() || userPw.isEmpty()) {
                 Toast.makeText(getApplicationContext(), "아이디 또는 비밀번호를 입력하세요.", Toast.LENGTH_SHORT).show();
 
-            } else {//사용자가 무언가 입력을 한채 로그인 눌렀다면 LoginThread실행
-                LoginThread thread = new LoginThread();
-                thread.start();
-            }
-
-        } else if (view == btnRegister) {
-            Intent intent = new Intent(getApplicationContext(), Register.class);
-            startActivity(intent);
-        }
-    }
-
-    protected void onDestroy() {
-        super.onDestroy();
-        try {
-            memberSocket.close();
-            isRunning = false;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    //LoginThread는 자바로 dos.writeUTF()를 통해 userId와 userPw를 보내줌
-    //보낼 msg들은 무조건 " "띄어쓰기 해서 보내기 (token으로 나누기 위해서)
-    //그리고나서 LoginCheckThread 실행
-    class LoginThread extends Thread {
-        public void run() {
-            try {
-                final Socket socket = new Socket(url, 30000);
-                memberSocket = socket;
-
-                OutputStream os = socket.getOutputStream();
-                DataOutputStream dos = new DataOutputStream(os);
-
-                dos.writeUTF("Login " + userId + " " + userPw);
-
-                runOnUiThread(new Runnable() {
+            } else {
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
-                    public void run() {
-                        isRunning = true;
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            boolean success = jsonObject.getBoolean("success");
+                            if (success) { //로그인에 성공한 경우
+                                uName = jsonObject.getString("userName");
+                                uId = jsonObject.getString("userID");
+                                uPw = jsonObject.getString("userPassword");
+                                uYear = jsonObject.getString("userYear");
+                                uMonth = jsonObject.getString("userMonth");
+                                uDay = jsonObject.getString("userDay");
+                                uNick = jsonObject.getString("userNickname");
+                                uGen = jsonObject.getString("userGender");
 
-                        LoginCheckThread thread = new LoginCheckThread(socket);
-                        thread.start();
-                    }
-                });
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    //LoginCheckThread는 자바에서 보낸문자열을 dis.readUTF()를 통해 받음
-    //자바를 통해 디비내용을 체크한 뒤 msg를 보내줘서 그에 따른 실행이 되도록
-    class LoginCheckThread extends Thread {
-        Socket socket;
-        DataInputStream dis;
-
-        public LoginCheckThread(Socket socket) {
-            try {
-                this.socket = socket;
-                InputStream is = socket.getInputStream();
-                dis = new DataInputStream(is);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        public void run() {
-            try {
-                while (isRunning) {
-                    final String msg = dis.readUTF();
-
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (Integer.parseInt(msg) == 1) {
                                 Toast.makeText(getApplicationContext(), "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(getApplicationContext(), Main.class);
+                                Intent intent = new Intent(Login.this, Main.class);
                                 startActivity(intent);
                                 finish();
-                            } else if (Integer.parseInt(msg) == 2) {//로그인실패
+                            } else { //로그인에 실패한 경우
+                                Toast.makeText(getApplicationContext(), "로그인에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                                 loginCnt++;
-
                                 if (loginCnt == 4) {//4번째 실패부터 30초 기다려야함
                                     Toast.makeText(getApplicationContext(), "30초 후에 재입력하세요", Toast.LENGTH_SHORT).show();
                                     initTime = System.currentTimeMillis();
@@ -151,12 +99,38 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                                     Toast.makeText(getApplicationContext(), "아이디 또는 비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
                                 }
                             }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    });
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+                    }
+                };
+
+                LoginRequest loginRequest = new LoginRequest(userId, userPw, responseListener);
+                RequestQueue queue = Volley.newRequestQueue(Login.this);
+                queue.add(loginRequest);
+            }
+
+        } else if (view == btnRegister) {
+            Intent intent = new Intent(getApplicationContext(), Register.class);
+            startActivity(intent);
+            finish();
+        }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            if(System.currentTimeMillis() - initTime2 > 3000){//처음 누른 상태
+                Toast.makeText(getApplicationContext(),"종료하려면 한 번 더 눌러주세요",Toast.LENGTH_SHORT).show();
+                initTime2 = System.currentTimeMillis();
+                return true;
+            }
+            else{//3초이내에 다시 누름
+                finish();
+                return true;
             }
         }
+
+        return false;
     }
 }

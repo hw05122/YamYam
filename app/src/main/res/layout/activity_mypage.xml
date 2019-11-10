@@ -22,7 +22,7 @@
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:src="@drawable/woman"
+                android:src="@drawable/ic_launcher_foreground"
                 android:id="@+id/state"
                 android:layout_marginRight="20dp"/>
 
@@ -92,9 +92,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/state"
-                android:layout_marginTop="50dp"
-                android:gravity="right"
-                android:id="@+id/llModi">
+                android:layout_marginTop="80dp"
+                android:gravity="right">
 
                 <Button
                     android:layout_width="wrap_content"
@@ -103,58 +102,6 @@
                     android:id="@+id/btnModi"
                     android:onClick="onClick"/>
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/llModiContent"
-                android:visibility="invisible"
-                android:layout_below="@id/llModi"
-                android:layout_marginTop="20dp"
-                android:orientation="vertical">
-
-                <RadioGroup
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:id="@+id/rg">
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="상담가능"
-                        android:id="@+id/btnConsultOk"
-                        android:layout_marginRight="50dp"/>
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/btnConsultNo"
-                        android:text="휴업"/>
-                </RadioGroup>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:layout_marginTop="30dp">
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="수정완료"
-                        android:id="@+id/btnOk"
-                        android:onClick="onClick"/>
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="취소"
-                        android:id="@+id/btnCancel"
-                        android:onClick="onClick"/>
-                </LinearLayout>
-            </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
 
@@ -162,35 +109,44 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Button
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="상담사목록"
+            android:src="@drawable/ic_userlist"
+            android:background="@color/colorPrimary"
             android:id="@+id/btnList"
             android:layout_weight="1"
-            android:onClick="onClick"/>
+            android:onClick="onClick"
+            android:layout_margin="1dp"/>
 
-        <Button
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="나의상담방"
+            android:src="@drawable/ic_chatting"
+            android:background="@color/colorPrimary"
             android:id="@+id/btnChatting"
             android:layout_weight="1"
-            android:onClick="onClick"/>
+            android:onClick="onClick"
+            android:layout_margin="1dp"/>
 
-        <Button
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="자동매칭"
+            android:src="@drawable/ic_auto"
+            android:background="@color/colorPrimary"
             android:id="@+id/btnAuto"
             android:layout_weight="1"
-            android:onClick="onClick"/>
+            android:onClick="onClick"
+            android:layout_margin="1dp"/>
 
-        <Button
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="마이페이지"
+            android:src="@drawable/ic_my"
+            android:background="@color/colorPrimary"
             android:id="@+id/btnMy"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:layout_margin="1dp"/>
     </LinearLayout>
 </LinearLayout>

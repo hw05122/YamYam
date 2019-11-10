@@ -5,67 +5,67 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Main"
-    android:orientation="vertical"
-    android:gravity="center">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center">
+        android:layout_weight="1">
 
-        <Button
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:text="상담하기"
-            android:textSize="20sp"
-            android:id="@+id/btnChat"
-            android:onClick="onClick"/>
-
-        <Button
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:text="쪽지하기"
-            android:textSize="20sp"
-            android:id="@+id/btnMsg"
-            android:onClick="onClick"/>
-
-        <Button
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:text="키우기"
-            android:textSize="20sp"
-            android:id="@+id/btnGrow"
-            android:onClick="onClick"/>
     </LinearLayout>
 
-
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center">
+        android:layout_height="wrap_content">
 
-        <Button
-            android:layout_width="120dp"
+        <ImageButton
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="출석체크"
-            android:textSize="20sp"
+            android:src="@drawable/ic_chatting"
+            android:background="@color/colorPrimary"
+            android:id="@+id/btnChat"
+            android:onClick="onClick"
+            android:layout_weight="1"
+            android:layout_margin="1dp"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_message"
+            android:background="@color/colorPrimary"
+            android:id="@+id/btnMsg"
+            android:onClick="onClick"
+            android:layout_weight="1"
+            android:layout_margin="1dp"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_attendance"
+            android:background="@color/colorPrimary"
             android:id="@+id/btnCheck"
-            android:onClick="onClick"/>
+            android:onClick="onClick"
+            android:layout_weight="1"
+            android:layout_margin="1dp"/>
 
-        <Button
-            android:layout_width="120dp"
+        <ImageButton
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="포인트"
-            android:textSize="20sp"
+            android:src="@drawable/point"
+            android:background="@color/colorPrimary"
             android:id="@+id/btnPoint"
-            android:onClick="onClick"/>
+            android:onClick="onClick"
+            android:layout_weight="1"
+            android:layout_margin="1dp"/>
 
-        <Button
-            android:layout_width="120dp"
+        <ImageButton
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="설정"
-            android:textSize="20sp"
+            android:src="@drawable/ic_setting"
+            android:background="@color/colorPrimary"
             android:id="@+id/btnSetting"
-            android:onClick="onClick"/>
+            android:onClick="onClick"
+            android:layout_weight="1"
+            android:layout_margin="1dp"/>
     </LinearLayout>
 </LinearLayout>
