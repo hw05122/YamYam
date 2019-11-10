@@ -4,14 +4,151 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Main"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".Main">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="즐겨찾기"
+                    android:textSize="20sp"
+                    android:gravity="center"/>
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:id="@+id/llStar">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="상담사1"
+                            android:textSize="20sp"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="상담사2"
+                            android:textSize="20sp"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="상담사3"
+                            android:textSize="20sp"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="상담사4"
+                            android:textSize="20sp"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="상담사5"
+                            android:textSize="20sp"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="상담사6"
+                            android:textSize="20sp"/>
+                    </LinearLayout>
+                </ScrollView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="내정보"
+                    android:textSize="20sp"
+                    android:gravity="center"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="포인트"
+                            android:textSize="15sp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="등급"
+                            android:textSize="15sp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="별점"
+                            android:textSize="15sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="You ask me, \nYou answer me"
+            android:textSize="30sp"
+            android:gravity="center"/>
     </LinearLayout>
 
     <LinearLayout
@@ -19,53 +156,53 @@
         android:layout_height="wrap_content">
 
         <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_chatting"
-            android:background="@color/colorPrimary"
             android:id="@+id/btnChat"
-            android:onClick="onClick"
-            android:layout_weight="1"
-            android:layout_margin="1dp"/>
-
-        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_message"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
             android:background="@color/colorPrimary"
+            android:onClick="onClick"
+            android:src="@drawable/ic_chatting" />
+
+        <ImageButton
             android:id="@+id/btnMsg"
-            android:onClick="onClick"
-            android:layout_weight="1"
-            android:layout_margin="1dp"/>
-
-        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_attendance"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
             android:background="@color/colorPrimary"
+            android:onClick="onClick"
+            android:src="@drawable/ic_message" />
+
+        <ImageButton
             android:id="@+id/btnCheck"
-            android:onClick="onClick"
-            android:layout_weight="1"
-            android:layout_margin="1dp"/>
-
-        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/point"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
             android:background="@color/colorPrimary"
+            android:onClick="onClick"
+            android:src="@drawable/ic_attendance" />
+
+        <ImageButton
             android:id="@+id/btnPoint"
-            android:onClick="onClick"
-            android:layout_weight="1"
-            android:layout_margin="1dp"/>
-
-        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_setting"
-            android:background="@color/colorPrimary"
-            android:id="@+id/btnSetting"
-            android:onClick="onClick"
+            android:layout_margin="1dp"
             android:layout_weight="1"
-            android:layout_margin="1dp"/>
+            android:background="@color/colorPrimary"
+            android:onClick="onClick"
+            android:src="@drawable/point" />
+
+        <ImageButton
+            android:id="@+id/btnSetting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:onClick="onClick"
+            android:src="@drawable/ic_setting" />
     </LinearLayout>
 </LinearLayout>
