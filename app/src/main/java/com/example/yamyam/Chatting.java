@@ -45,6 +45,7 @@ public class Chatting extends AppCompatActivity implements View.OnClickListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatting);
+        setTitle("나의상담방");
 
         etMsg = (EditText) findViewById(R.id.etMsg);
         btnSend = (Button) findViewById(R.id.btnSend);

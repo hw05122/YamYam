@@ -40,8 +40,8 @@ public class Attendance extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle saveInstanceState) {
         super.onCreate(saveInstanceState);
-
         setContentView(R.layout.activity_attendance);
+        setTitle("출석하기");
 
         txtMission = (TextView)findViewById(R.id.txtMission);
         tvDate = (TextView) findViewById(R.id.tv_date);

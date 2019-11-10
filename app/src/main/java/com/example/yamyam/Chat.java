@@ -38,6 +38,7 @@ public class Chat extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        setTitle("상담하기");
 
         btnCurrent = (Button)findViewById(R.id.btnCurrent);
         btnTotal = (Button)findViewById(R.id.btnTotal);

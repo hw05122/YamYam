@@ -28,6 +28,7 @@ public class Message extends AppCompatActivity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
+        setTitle("쪽지함");
 
         btnMenu = (Button)findViewById(R.id.btnMenu);
         btnMenu.setOnClickListener(this);

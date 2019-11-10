@@ -27,6 +27,7 @@ public class Mypage extends AppCompatActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mypage);
+        setTitle("마이페이지");
 
         tvNick = (TextView) findViewById(R.id.tvNick);
         tvNick.setText(Login.uNick);
