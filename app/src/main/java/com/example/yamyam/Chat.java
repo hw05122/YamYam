@@ -12,11 +12,14 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +36,7 @@ public class Chat extends AppCompatActivity {
     private ImageButton btnChatting,btnAuto,btnMy;
     private Button btnCurrent, btnTotal, btnNew, btnSearch, btnOption;
     public ArrayList<User> userList = new ArrayList<>();
+    private int genChk = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +52,11 @@ public class Chat extends AppCompatActivity {
         btnChatting = (ImageButton) findViewById(R.id.btnChatting);
         btnAuto = (ImageButton)findViewById(R.id.btnAuto);
         btnMy = (ImageButton)findViewById(R.id.btnMy);
+
+        String[] arrWords = new String[]{"가방","가구","가나다라","나비","다람쥐","young","yolo"};
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,arrWords);
+        AutoCompleteTextView autoTv = (AutoCompleteTextView)findViewById(R.id.autoTv);
+        autoTv.setAdapter(arrayAdapter);
 
         userListShow();
     }
@@ -68,10 +77,43 @@ public class Chat extends AppCompatActivity {
 
         }
         else if(view == btnSearch){
-
+            Toast.makeText(getApplicationContext(),"검색하였습니다.",Toast.LENGTH_SHORT).show();
         }
         else if(view == btnOption){
+            AlertDialog.Builder starB = new AlertDialog.Builder(Chat.this);
+            starB.setTitle("조건검색").setIcon(R.drawable.logo4);
+            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View root = inflater.inflate(R.layout.digoption, null);
+            starB.setView(root);
 
+            RadioGroup rgState = (RadioGroup)root.findViewById(R.id.rgGen);
+            rgState.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    if(checkedId == R.id.rbM){
+                        genChk = 1;
+                    }
+                    else if(checkedId == R.id.rbW){
+                        genChk = 2;
+                    }
+                }
+            });
+            starB.setNegativeButton("확인", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if(genChk == 1){//남
+
+                    }
+                    else if(genChk == 2){//여
+
+                    }
+                    Toast.makeText(getApplicationContext(), "조건검색을 하였습니다.", Toast.LENGTH_SHORT).show();
+                }
+            });
+            starB.setPositiveButton("취소",null);
+            starB.setCancelable(false);
+
+            starB.show();
         }
         else if(view == btnChatting){
             Intent intent = new Intent(getApplicationContext(),Chatting.class);
