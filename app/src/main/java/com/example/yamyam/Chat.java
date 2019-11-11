@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -62,7 +63,86 @@ public class Chat extends AppCompatActivity {
     }
 
     public void userListShow(){
+        LinearLayout llUserList = (LinearLayout)View.inflate(Chat.this,R.layout.userlist,null);
+        LinearLayout llList = (LinearLayout)findViewById(R.id.llList);
+        llList.addView(llUserList);
+        llList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View viewProfile = (View)View.inflate(Chat.this,R.layout.profile,null);
+                AlertDialog.Builder digProfile = new AlertDialog.Builder(Chat.this);
+                digProfile.setView(viewProfile).setTitle("프로필");
 
+                ImageButton ibChatting = (ImageButton)viewProfile.findViewById(R.id.btnChatting);
+                ibChatting.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(true){//상담방 없는 경우
+                            Intent intent = new Intent(getApplicationContext(),Chatting.class);
+                            startActivity(intent);
+                            finish();
+                        }else{
+
+                        }
+                    }
+                });
+
+                final TextView tvNick = (TextView)viewProfile.findViewById(R.id.tvNick);
+                ImageButton ibMsg = (ImageButton)viewProfile.findViewById(R.id.btnMsg);
+                ibMsg.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialog.Builder digUserMsg = new AlertDialog.Builder(Chat.this);
+                        digUserMsg.setTitle("사용자에게 쪽지보내기");
+                        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+                        View root = inflater.inflate(R.layout.digusermsg, null);
+                        digUserMsg.setView(root);
+
+                        EditText etNick = (EditText)root.findViewById(R.id.etNick);
+                        etNick.setText(tvNick.getText().toString());
+                        Button btnNickChk = (Button)root.findViewById(R.id.btnNickChk);
+                        btnNickChk.setVisibility(View.INVISIBLE);
+
+                        EditText etUerContent = (EditText)root.findViewById(R.id.etUserContent);
+                        etUerContent.setText("");
+
+                        digUserMsg.setNegativeButton("보내기", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                if(true){
+                                    Toast.makeText(getApplicationContext(),"쪽지를 보냈습니다.",Toast.LENGTH_SHORT).show();
+
+                                }
+                                else if(false){
+                                    Toast.makeText(getApplicationContext(),"내용을 입력하세요",Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
+                        digUserMsg.setPositiveButton("취소",null);
+                        digUserMsg.show();
+                    }
+                });
+
+                final ImageButton ibStar = (ImageButton)viewProfile.findViewById(R.id.ibStar);
+                ibStar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(ibStar.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.ic_star_empty).getConstantState())) {//빈 별
+                            Toast.makeText(getApplicationContext(), "즐겨찾기추가", Toast.LENGTH_SHORT).show();
+                            ibStar.setImageResource(R.drawable.ic_star_full);
+                        }
+                        else{
+                            Toast.makeText(getApplicationContext(), "즐겨찾기제외", Toast.LENGTH_SHORT).show();
+                            ibStar.setImageResource(R.drawable.ic_star_empty);
+                        }
+                    }
+                });
+
+                digProfile.setNegativeButton("닫기",null);
+                digProfile.show();
+            }
+        });
     }
 
     public void onClick(View view) {
