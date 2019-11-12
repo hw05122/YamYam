@@ -38,6 +38,7 @@ public class Chat extends AppCompatActivity {
     private Button btnCurrent, btnTotal, btnNew, btnSearch, btnOption;
     public ArrayList<User> userList = new ArrayList<>();
     private int genChk = 0;
+    private AutoCompleteTextView autoTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +57,7 @@ public class Chat extends AppCompatActivity {
 
         String[] arrWords = new String[]{"가방","가구","가나다라","나비","다람쥐","young","yolo"};
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,arrWords);
-        AutoCompleteTextView autoTv = (AutoCompleteTextView)findViewById(R.id.autoTv);
+        autoTv = (AutoCompleteTextView)findViewById(R.id.autoTv);
         autoTv.setAdapter(arrayAdapter);
 
         userListShow();
@@ -157,7 +158,118 @@ public class Chat extends AppCompatActivity {
 
         }
         else if(view == btnSearch){
-            Toast.makeText(getApplicationContext(),"검색하였습니다.",Toast.LENGTH_SHORT).show();
+            final String uNick = autoTv.getText().toString();
+
+            if (uNick.isEmpty()) {
+                Toast.makeText(getApplicationContext(), "검색어를 입력해주세요.", Toast.LENGTH_SHORT).show();
+
+            } else {
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            boolean success = jsonObject.getBoolean("success");
+
+                            if (success) { //사용자 있음
+                                LinearLayout llUserList = (LinearLayout)View.inflate(Chat.this,R.layout.userlist,null);
+                                LinearLayout llList = (LinearLayout)findViewById(R.id.llList);
+
+                                TextView nick = (TextView)llUserList.findViewById(R.id.tvNick);
+                                nick.setText(uNick);
+                                llList.addView(llUserList);
+                                llList.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        View viewProfile = (View)View.inflate(Chat.this,R.layout.profile,null);
+                                        AlertDialog.Builder digProfile = new AlertDialog.Builder(Chat.this);
+                                        digProfile.setView(viewProfile).setTitle("프로필");
+
+                                        ImageButton ibChatting = (ImageButton)viewProfile.findViewById(R.id.btnChatting);
+                                        ibChatting.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                if(true){//상담방 없는 경우
+                                                    Intent intent = new Intent(getApplicationContext(),Chatting.class);
+                                                    startActivity(intent);
+                                                    finish();
+                                                }else{
+
+                                                }
+                                            }
+                                        });
+
+                                        final TextView tvNick = (TextView)viewProfile.findViewById(R.id.tvNick);
+                                        tvNick.setText(uNick);
+
+                                        ImageButton ibMsg = (ImageButton)viewProfile.findViewById(R.id.btnMsg);
+                                        ibMsg.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                AlertDialog.Builder digUserMsg = new AlertDialog.Builder(Chat.this);
+                                                digUserMsg.setTitle("사용자에게 쪽지보내기");
+                                                LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+                                                View root = inflater.inflate(R.layout.digusermsg, null);
+                                                digUserMsg.setView(root);
+
+                                                EditText etNick = (EditText)root.findViewById(R.id.etNick);
+                                                etNick.setText(tvNick.getText().toString());
+                                                Button btnNickChk = (Button)root.findViewById(R.id.btnNickChk);
+                                                btnNickChk.setVisibility(View.INVISIBLE);
+
+                                                EditText etUerContent = (EditText)root.findViewById(R.id.etUserContent);
+                                                etUerContent.setText("");
+
+                                                digUserMsg.setNegativeButton("보내기", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                                        if(true){
+                                                            Toast.makeText(getApplicationContext(),"쪽지를 보냈습니다.",Toast.LENGTH_SHORT).show();
+
+                                                        }
+                                                        else if(false){
+                                                            Toast.makeText(getApplicationContext(),"내용을 입력하세요",Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    }
+                                                });
+
+                                                digUserMsg.setPositiveButton("취소",null);
+                                                digUserMsg.show();
+                                            }
+                                        });
+
+                                        final ImageButton ibStar = (ImageButton)viewProfile.findViewById(R.id.ibStar);
+                                        ibStar.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                if(ibStar.getDrawable().getConstantState().equals(getResources().getDrawable(R.drawable.ic_star_empty).getConstantState())) {//빈 별
+                                                    Toast.makeText(getApplicationContext(), "즐겨찾기추가", Toast.LENGTH_SHORT).show();
+                                                    ibStar.setImageResource(R.drawable.ic_star_full);
+                                                }
+                                                else{
+                                                    Toast.makeText(getApplicationContext(), "즐겨찾기제외", Toast.LENGTH_SHORT).show();
+                                                    ibStar.setImageResource(R.drawable.ic_star_empty);
+                                                }
+                                            }
+                                        });
+
+                                        digProfile.setNegativeButton("닫기",null);
+                                        digProfile.show();
+                                    }
+                                });
+                            } else { //사용자 없음
+                                Toast.makeText(getApplicationContext(), "일치하는 사용자가 없습니다.", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+
+                NickChkRequest nickChkRequest = new NickChkRequest(uNick, responseListener);
+                RequestQueue queue = Volley.newRequestQueue(Chat.this);
+                queue.add(nickChkRequest);
+            }
         }
         else if(view == btnOption){
             AlertDialog.Builder starB = new AlertDialog.Builder(Chat.this);

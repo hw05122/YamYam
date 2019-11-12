@@ -27,6 +27,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
     private Button btnIdChk, btnNickChk, btnOk, btnCancel;
     private RadioGroup rbtnGroup;
     private String userName, userId, userPw1, userPw2, userNick, userYear, userMonth, userDay, userGen;
+    private boolean idChk = false, nickChk = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,16 +111,68 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
 
     public void onClick(View view) {
         if (view == btnIdChk) {
-            if (true) {
-                Toast.makeText(getApplicationContext(), "사용가능한 아이디입니다.", Toast.LENGTH_SHORT).show();
-            } else if (false) {
-                Toast.makeText(getApplicationContext(), "이미 사용중인 아이디입니다..", Toast.LENGTH_SHORT).show();
+            String uId = etId.getText().toString();
+
+            if (uId.isEmpty()) {
+                Toast.makeText(getApplicationContext(), "아이디를 입력하세요.", Toast.LENGTH_SHORT).show();
+
+            } else {
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            boolean success = jsonObject.getBoolean("success");
+
+                            if (success) { //중복아이디 있음
+                                idChk = false;
+                                Toast.makeText(getApplicationContext(), "이미 사용중인 아이디 입니다.", Toast.LENGTH_SHORT).show();
+                            } else { //중복아이디 없음
+                                idChk = true;
+                                Toast.makeText(getApplicationContext(), "사용가능한 아이디 입니다.", Toast.LENGTH_SHORT).show();
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+
+                IdChkRequest idChkRequest = new IdChkRequest(uId, responseListener);
+                RequestQueue queue = Volley.newRequestQueue(Register.this);
+                queue.add(idChkRequest);
             }
         } else if (view == btnNickChk) {
-            if (true) {
-                Toast.makeText(getApplicationContext(), "사용가능한 닉네임입니다.", Toast.LENGTH_SHORT).show();
-            } else if (false) {
-                Toast.makeText(getApplicationContext(), "이미 사용중인 닉네임입니다..", Toast.LENGTH_SHORT).show();
+            String uNick = etNick.getText().toString();
+
+            if (uNick.isEmpty()) {
+                Toast.makeText(getApplicationContext(), "닉네임을 입력하세요.", Toast.LENGTH_SHORT).show();
+
+            } else {
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            boolean success = jsonObject.getBoolean("success");
+
+                            if (success) { //중복닉네임 있음
+                                nickChk = false;
+                                Toast.makeText(getApplicationContext(), "이미 사용중인 닉네임 입니다.", Toast.LENGTH_SHORT).show();
+                            } else { //중복닉네임 없음
+                                nickChk = true;
+                                Toast.makeText(getApplicationContext(), "사용가능한 닉네임 입니다.", Toast.LENGTH_SHORT).show();
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+
+                NickChkRequest nickChkRequest = new NickChkRequest(uNick, responseListener);
+                RequestQueue queue = Volley.newRequestQueue(Register.this);
+                queue.add(nickChkRequest);
             }
         } else if (view == btnOk) {
             userName = etName.getText().toString();
@@ -131,20 +184,20 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             userDay = etDay.getText().toString();
             userNick = etNick.getText().toString();
 
-            if ((userPw1.equals(userPw2))&&(userName != null && !userName.isEmpty()) && (userId != null && !userId.isEmpty()) && (userPw1 != null && !userPw1.isEmpty()) && (userPw2 != null && !userPw2.isEmpty()) &&(userNick != null && !userNick.isEmpty()) && (userGen != null && !userGen.isEmpty()) && (userYear != null && !userYear.isEmpty()) && (userMonth != null && !userMonth.isEmpty()) && (userDay != null && !userDay.isEmpty())) {
+            if (idChk && nickChk && (userPw1.equals(userPw2)) && (userName != null && !userName.isEmpty()) && (userId != null && !userId.isEmpty()) && (userPw1 != null && !userPw1.isEmpty()) && (userPw2 != null && !userPw2.isEmpty()) && (userNick != null && !userNick.isEmpty()) && (userGen != null && !userGen.isEmpty()) && (userYear != null && !userYear.isEmpty()) && (userMonth != null && !userMonth.isEmpty()) && (userDay != null && !userDay.isEmpty())) {
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             boolean success = jsonObject.getBoolean("success");
-                            if(success){ //회원등록에 성공한 경우
-                                Toast.makeText(getApplicationContext(),"회원 등록에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+                            if (success) { //회원등록에 성공한 경우
+                                Toast.makeText(getApplicationContext(), "회원 등록에 성공하였습니다.", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(Register.this, Login.class);
                                 startActivity(intent);
                                 finish();
                             } else { //회원등록에 실패한 경우
-                                Toast.makeText(getApplicationContext(),"회원 등록에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "회원 등록에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                                 return;
                             }
                         } catch (JSONException e) {
@@ -161,8 +214,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             } else {
                 Toast.makeText(getApplicationContext(), "회원가입 형식이 올바르지 않습니다.", Toast.LENGTH_SHORT).show();
             }
-        }
-        else if (view == btnCancel) {
+        } else if (view == btnCancel) {
             Intent intent = new Intent(getApplicationContext(), Login.class);
             startActivity(intent);
             finish();
@@ -171,7 +223,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK){
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             Intent intent = new Intent(getApplicationContext(), Login.class);
             startActivity(intent);
             finish();
