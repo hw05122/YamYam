@@ -28,6 +28,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
     private RadioGroup rbtnGroup;
     private String userName, userId, userPw1, userPw2, userNick, userYear, userMonth, userDay, userGen;
     private boolean idChk = false, nickChk = false;
+    private String userStar = "0.0", userState = "o", userHashtag1 = "", userHashtag2 = "", userHashtag3 = "", userStop = "x", userGrade ="얌";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +117,9 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             if (uId.isEmpty()) {
                 Toast.makeText(getApplicationContext(), "아이디를 입력하세요.", Toast.LENGTH_SHORT).show();
 
-            } else {
+            } else if (uId.equals("admin")) {
+                Toast.makeText(getApplicationContext(), "사용불가능한 아이디입니다.", Toast.LENGTH_SHORT).show();
+            }else {
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -148,6 +151,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             if (uNick.isEmpty()) {
                 Toast.makeText(getApplicationContext(), "닉네임을 입력하세요.", Toast.LENGTH_SHORT).show();
 
+            } else if (uNick.equals("admin")) {
+                Toast.makeText(getApplicationContext(), "사용불가능한 닉네임입니다.", Toast.LENGTH_SHORT).show();
             } else {
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
@@ -183,36 +188,69 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
             userMonth = etMonth.getText().toString();
             userDay = etDay.getText().toString();
             userNick = etNick.getText().toString();
-
-            if (idChk && nickChk && (userPw1.equals(userPw2)) && (userName != null && !userName.isEmpty()) && (userId != null && !userId.isEmpty()) && (userPw1 != null && !userPw1.isEmpty()) && (userPw2 != null && !userPw2.isEmpty()) && (userNick != null && !userNick.isEmpty()) && (userGen != null && !userGen.isEmpty()) && (userYear != null && !userYear.isEmpty()) && (userMonth != null && !userMonth.isEmpty()) && (userDay != null && !userDay.isEmpty())) {
-                Response.Listener<String> responseListener = new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            boolean success = jsonObject.getBoolean("success");
-                            if (success) { //회원등록에 성공한 경우
-                                Toast.makeText(getApplicationContext(), "회원 등록에 성공하였습니다.", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(Register.this, Login.class);
-                                startActivity(intent);
-                                finish();
-                            } else { //회원등록에 실패한 경우
-                                Toast.makeText(getApplicationContext(), "회원 등록에 실패하였습니다.", Toast.LENGTH_SHORT).show();
-                                return;
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                };
-
-                //서버로 Volley를 이용해서 요청을 함
-                RegisterRequest registerRequest = new RegisterRequest(userName, userId, userPw1, userYear, userMonth, userDay, userNick, userGen, responseListener);
-                RequestQueue queue = Volley.newRequestQueue(Register.this);
-                queue.add(registerRequest);
+            if (!idChk) {
+                Toast.makeText(getApplicationContext(), "아이디 중복확인을 눌러주세요", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(getApplicationContext(), "회원가입 형식이 올바르지 않습니다.", Toast.LENGTH_SHORT).show();
+                if (userMonth.length() == 1) {
+                    userMonth = "0" + userMonth;
+                }
+                if (userDay.length() == 1) {
+                    userDay = "0" + userDay;
+                }
+
+                if (!nickChk) {
+                    Toast.makeText(getApplicationContext(), "닉네임 중복확인을 눌러주세요", Toast.LENGTH_SHORT).show();
+                } else {
+                    if ((userPw1.equals(userPw2)) && (userName != null && !userName.isEmpty()) && (userId != null && !userId.isEmpty()) && (userPw1 != null && !userPw1.isEmpty()) && (userPw2 != null && !userPw2.isEmpty()) && (userNick != null && !userNick.isEmpty()) && (userGen != null && !userGen.isEmpty()) && (userYear != null && !userYear.isEmpty()) && (userMonth != null && !userMonth.isEmpty()) && (userDay != null && !userDay.isEmpty())) {
+                        Response.Listener<String> responseListener = new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response);
+                                    boolean success = jsonObject.getBoolean("success");
+                                    if (success) { //회원등록에 성공한 경우
+                                        Response.Listener<String> responseListener = new Response.Listener<String>() {
+                                            @Override
+                                            public void onResponse(String response) {
+                                                try {
+                                                    JSONObject jsonObject = new JSONObject(response);
+                                                    boolean success = jsonObject.getBoolean("success");
+                                                    if (success) { //레코드등록 성공
+                                                        Toast.makeText(getApplicationContext(), "회원 등록에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+                                                        Intent intent = new Intent(Register.this, Login.class);
+                                                        startActivity(intent);
+                                                        finish();
+                                                    } else { //레코드등록 실패
+                                                        Toast.makeText(getApplicationContext(), "회원 등록에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        };
+                                        //서버로 Volley를 이용해서 요청을 함
+                                        AutoAddRequest autoAddRequest = new AutoAddRequest(userId,"0","0","0","0","0","0","0","0","0","0","0","0", responseListener);
+                                        RequestQueue queue = Volley.newRequestQueue(Register.this);
+                                        queue.add(autoAddRequest);
+                                    } else { //회원등록에 실패한 경우
+                                        Toast.makeText(getApplicationContext(), "회원 등록에 실패하였습니다.", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        };
+
+                        //서버로 Volley를 이용해서 요청을 함
+                        RegisterRequest registerRequest = new RegisterRequest(userName, userId, userPw1, userYear, userMonth, userDay, userNick, userGen, userStar, userState, userHashtag1, userHashtag2, userHashtag3, userStop, userGrade, responseListener);
+                        RequestQueue queue = Volley.newRequestQueue(Register.this);
+                        queue.add(registerRequest);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "회원가입 형식이 올바르지 않습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
         } else if (view == btnCancel) {
             Intent intent = new Intent(getApplicationContext(), Login.class);

@@ -10,13 +10,23 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/ivState"
                 android:src="@drawable/ic_launcher_foreground"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="성별"
+                android:id="@+id/tvGender"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:visibility="gone" />
         </LinearLayout>
 
         <LinearLayout
@@ -100,7 +110,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="#"
                 android:id="@+id/tvHash1"
                 android:layout_weight="1"
                 android:gravity="center"/>
@@ -108,7 +117,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="#"
                 android:id="@+id/tvHash2"
                 android:layout_weight="1"
                 android:gravity="center"/>
@@ -116,7 +124,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="#"
                 android:id="@+id/tvHash3"
                 android:layout_weight="1"
                 android:gravity="center"/>

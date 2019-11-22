@@ -15,7 +15,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:paddingTop="30dp"
             android:paddingHorizontal="20dp">
 
@@ -65,7 +65,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/tvHash1"
-                    android:text="#첫사랑"
+                    android:text="#"
                     android:textSize="20dp"
                     android:layout_weight="1"
                     android:layout_marginRight="10dp"
@@ -75,7 +75,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/tvHash2"
-                    android:text="#설렘"
+                    android:text="#"
                     android:textSize="20dp"
                     android:layout_weight="1"
                     android:layout_marginRight="10dp"
@@ -85,7 +85,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/tvHash3"
-                    android:text="#짝사랑"
+                    android:text="#"
                     android:textSize="20dp"
                     android:layout_weight="1"
                     android:gravity="center"/>
@@ -106,11 +106,171 @@
                     android:onClick="onClick"/>
             </LinearLayout>
         </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="상담통계"
+                    android:textSize="20sp"
+                    android:gravity="center"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvChart"
+                    android:visibility="gone"
+                    android:gravity="center"
+                    android:layout_marginTop="10dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginTop="3dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/llchart1"
+                        android:background="@drawable/heartchart0">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/tvCnt1"
+                            android:gravity="center"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/llchart2"
+                        android:background="@drawable/heartchart0">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/tvCnt2"
+                            android:gravity="center"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/llchart3"
+                        android:background="@drawable/heartchart0">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/tvCnt3"
+                            android:gravity="center"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/llchart4"
+                        android:background="@drawable/heartchart0">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/tvCnt4"
+                            android:gravity="center"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:id="@+id/llchart5"
+                        android:background="@drawable/heartchart0">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/tvCnt5"
+                            android:gravity="center"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:id="@+id/tv1"
+                        android:gravity="center"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:id="@+id/tv2"
+                        android:gravity="center"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:id="@+id/tv3"
+                        android:gravity="center"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:id="@+id/tv4"
+                        android:gravity="center"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:id="@+id/tv5"
+                        android:gravity="center"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp">
 
         <ImageButton
             android:layout_width="wrap_content"

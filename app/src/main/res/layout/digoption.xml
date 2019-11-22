@@ -29,7 +29,7 @@
                 <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="권태기　"
+                    android:text="고백　　"
                     android:layout_marginRight="10dp"
                     android:id="@+id/chk1"
                     android:layout_weight="1"/>
@@ -37,7 +37,7 @@
                 <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="고백　　"
+                    android:text="권태기　"
                     android:layout_marginRight="10dp"
                     android:id="@+id/chk2"
                     android:layout_weight="1"/>
@@ -83,7 +83,7 @@
                 <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="삼각관계"
+                    android:text="사랑　　"
                     android:layout_marginRight="10dp"
                     android:id="@+id/chk7"
                     android:layout_weight="1"/>

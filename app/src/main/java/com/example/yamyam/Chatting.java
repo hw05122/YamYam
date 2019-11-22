@@ -1,6 +1,6 @@
 package com.example.yamyam;
 
-        import androidx.annotation.NonNull;
+    import androidx.annotation.NonNull;
         import androidx.appcompat.app.AppCompatActivity;
 
         import android.app.AlertDialog;
@@ -38,8 +38,8 @@ public class Chatting extends AppCompatActivity implements View.OnClickListener 
     private String userNick;
     private boolean isConnect = false, isRunning = false;
     private Socket memberSocket;
-    private String ip = "192.168.0.8";
-    private int port = 30000;
+    private String ip = "192.168.0.6";
+    private int port = 30001;
     int chk = 0;
 
     @Override
@@ -253,7 +253,7 @@ public class Chatting extends AppCompatActivity implements View.OnClickListener 
                     AlertDialog.Builder starB = new AlertDialog.Builder(Chatting.this);
                     starB.setTitle("평가하기").setIcon(R.drawable.logo4);
                     LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-                    View root = inflater.inflate(R.layout.digstar, null);
+                    final View root = inflater.inflate(R.layout.digstar, null);
                     starB.setView(root);
 
                     starB.setPositiveButton("취소", new DialogInterface.OnClickListener() {
@@ -266,20 +266,17 @@ public class Chatting extends AppCompatActivity implements View.OnClickListener 
                     starB.setNegativeButton("확인", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            onDestroy();
-                            Intent intent = new Intent(getApplicationContext(), Chat.class);
-                            startActivity(intent);
-                            finish();
-                            /*RatingBar ratingBar = (RatingBar) findViewById(R.id.ratingBar);
+                            RatingBar ratingBar = (RatingBar) root.findViewById(R.id.ratingBar);
+                            float rating = ratingBar.getRating();
 
-
-                            if (ratingBar.getNumStars()==0) {
+                            if (rating==0) {
                                 Toast.makeText(getApplicationContext(), "평가를 완료해주세요", Toast.LENGTH_SHORT).show();
                             } else {
+                                Toast.makeText(getApplicationContext(),String.valueOf(rating),Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getApplicationContext(), Chat.class);
                                 startActivity(intent);
                                 finish();
-                            }*/
+                            }
                         }
                     });
 
@@ -294,7 +291,7 @@ public class Chatting extends AppCompatActivity implements View.OnClickListener 
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK){
+        if(keyCode == KeyEvent.KEYCODE_BACK){//잠시 나감
             Intent intent = new Intent(getApplicationContext(), Chat.class);
             startActivity(intent);
             finish();

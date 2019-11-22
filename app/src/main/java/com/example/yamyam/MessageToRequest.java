@@ -8,18 +8,15 @@ import com.android.volley.toolbox.StringRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MessageRequest extends StringRequest {
-
+public class MessageToRequest extends StringRequest {
     // 서버 URL 설정 (PHP 파일 연동)
-    final static private String URL = "https://jsu3229.cafe24.com/dbeditor/Message_yam.php";
+    final static private String URL = "https://jsu3229.cafe24.com/dbeditor/MessageTo_yam.php";
     private Map<String, String> map;
 
-    public MessageRequest(String userFrom, String userTo, String Text, Response.Listener<String> listener){
+    public MessageToRequest(String userTo, Response.Listener<String> listener){
         super(Method.POST, URL, listener, null);
         map = new HashMap<>();
-        map.put("userFrom", userFrom);
         map.put("userTo", userTo);
-        map.put("Text",Text);
     }
 
     @Override

@@ -2,9 +2,12 @@ package com.example.yamyam;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -35,7 +38,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private int loginCnt = 0;
     private double initTime, initTime2;
     private String userId, userPw;
-    public static String uName, uId, uPw, uYear,uMonth,uDay,uNick,uGen;
+    public static String uName, uId, uPw, uYear, uMonth, uDay, uNick, uGen, uStar, uState, uHash1, uHash2, uHash3, uStop, uGrade;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,12 +66,22 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 Toast.makeText(getApplicationContext(), "아이디 또는 비밀번호를 입력하세요.", Toast.LENGTH_SHORT).show();
 
             } else {
+                final AlertDialog.Builder starB = new AlertDialog.Builder(Login.this);
+                starB.setTitle("        로그인 중 입니다").setIcon(R.drawable.logo4);
+                LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+                View root = inflater.inflate(R.layout.digauto, null);
+                starB.setView(root);
+                starB.setCancelable(false);
+                final AlertDialog adB = starB.create();
+                adB.show();
+
                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             boolean success = jsonObject.getBoolean("success");
+
                             if (success) { //로그인에 성공한 경우
                                 uName = jsonObject.getString("userName");
                                 uId = jsonObject.getString("userID");
@@ -78,11 +91,25 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                                 uDay = jsonObject.getString("userDay");
                                 uNick = jsonObject.getString("userNickname");
                                 uGen = jsonObject.getString("userGender");
+                                uStar = jsonObject.getString("userStar");
+                                uState = jsonObject.getString("userState");
+                                uHash1 = jsonObject.getString("userHashtag1");
+                                uHash2 = jsonObject.getString("userHashtag2");
+                                uHash3 = jsonObject.getString("userHashtag3");
+                                uStop = jsonObject.getString("userStop");
+                                uGrade = jsonObject.getString("userGrade");
 
-                                Toast.makeText(getApplicationContext(), "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(Login.this, Main.class);
-                                startActivity(intent);
-                                finish();
+                                Log.d("young", "받아온 아이디:" + uId + " 닉네임:" + uNick + " 정지:" + uStop);
+
+                                if (uStop.equals("o")) {
+                                    Toast.makeText(getApplicationContext(), "정지된 회원입니다.", Toast.LENGTH_SHORT).show();
+                                    adB.dismiss();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(Login.this, Main.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
                             } else { //로그인에 실패한 경우
                                 Toast.makeText(getApplicationContext(), "로그인에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                                 loginCnt++;
@@ -99,6 +126,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                                 } else {
                                     Toast.makeText(getApplicationContext(), "아이디 또는 비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
                                 }
+                                adB.dismiss();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -120,13 +148,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK){
-            if(System.currentTimeMillis() - initTime2 > 3000){//처음 누른 상태
-                Toast.makeText(getApplicationContext(),"종료하려면 한 번 더 눌러주세요",Toast.LENGTH_SHORT).show();
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (System.currentTimeMillis() - initTime2 > 3000) {//처음 누른 상태
+                Toast.makeText(getApplicationContext(), "종료하려면 한 번 더 눌러주세요", Toast.LENGTH_SHORT).show();
                 initTime2 = System.currentTimeMillis();
                 return true;
-            }
-            else{//3초이내에 다시 누름
+            } else {//3초이내에 다시 누름
                 finish();
                 return true;
             }

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".User">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -10,13 +13,23 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/ivState"
-                android:src="@drawable/ic_launcher_foreground"/>
+                android:id="@+id/userState"
+                android:src="@drawable/ic_launcher_foreground" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="GENDER"
+                android:id="@+id/userGender"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:visibility="gone" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -35,16 +48,16 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="닉네임"
-                    android:id="@+id/tvNick"
+                    android:text="NICKNAME"
+                    android:id="@+id/userNickname"
                     android:layout_weight="1"
                     android:gravity="center"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="평가"
-                    android:id="@+id/tvStar"
+                    android:text="STAR"
+                    android:id="@+id/userStar"
                     android:layout_weight="1"
                     android:gravity="center"/>
             </LinearLayout>
@@ -60,7 +73,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="#"
-                    android:id="@+id/tvHash1"
+                    android:id="@+id/userHashtag1"
                     android:layout_weight="1"
                     android:gravity="center"/>
 
@@ -68,7 +81,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="#"
-                    android:id="@+id/tvHash2"
+                    android:id="@+id/userHashtag2"
                     android:layout_weight="1"
                     android:gravity="center"/>
 
@@ -76,7 +89,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="#"
-                    android:id="@+id/tvHash3"
+                    android:id="@+id/userHashtag3"
                     android:layout_weight="1"
                     android:gravity="center"/>
             </LinearLayout>
