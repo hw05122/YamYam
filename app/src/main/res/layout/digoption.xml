@@ -12,188 +12,225 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="나의 해시태그"
-            android:textSize="20sp"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center">
-
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="고백　　"
-                    android:layout_marginRight="10dp"
-                    android:id="@+id/chk1"
-                    android:layout_weight="1"/>
-
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="권태기　"
-                    android:layout_marginRight="10dp"
-                    android:id="@+id/chk2"
-                    android:layout_weight="1"/>
-
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="다툼　　"
-                    android:layout_marginRight="10dp"
-                    android:id="@+id/chk3"
-                    android:layout_weight="1"/>
-
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="데이트　"
-                    android:id="@+id/chk4"
-                    android:layout_weight="1"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center">
-
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="미련　　"
-                    android:layout_marginRight="10dp"
-                    android:id="@+id/chk5"
-                    android:layout_weight="1"/>
-
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="바람　　"
-                    android:layout_marginRight="10dp"
-                    android:id="@+id/chk6"
-                    android:layout_weight="1"/>
-
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="사랑　　"
-                    android:layout_marginRight="10dp"
-                    android:id="@+id/chk7"
-                    android:layout_weight="1"/>
-
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="썸　　　"
-                    android:id="@+id/chk8"
-                    android:layout_weight="1"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center">
-
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="소개팅　"
-                    android:layout_marginRight="10dp"
-                    android:id="@+id/chk9"
-                    android:layout_weight="1"/>
-
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="이별　　"
-                    android:layout_marginRight="10dp"
-                    android:id="@+id/chk10"
-                    android:layout_weight="1"/>
-
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="짝사랑　"
-                    android:layout_marginRight="10dp"
-                    android:id="@+id/chk11"
-                    android:layout_weight="1"/>
-
-                <CheckBox
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="첫사랑　"
-                    android:id="@+id/chk12"
-                    android:layout_weight="1"/>
-            </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="10dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="성별"
-            android:textSize="20sp"/>
+            android:text="조건검색을 하고 싶은 버튼을 누르세요"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:layout_marginBottom="20dp"/>
 
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
-            android:id="@+id/rgGen">
+            android:id="@+id/rgOption"
+            android:layout_marginLeft="30dp">
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="남"
-                android:id="@+id/rbM"/>
+                android:text="해시태그"
+                android:id="@+id/rbHashtag"
+                android:layout_weight="1"/>
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="여"
-                android:layout_marginLeft="70dp"
-                android:id="@+id/rbW"/>
+                android:text="성별"
+                android:id="@+id/rbGender"
+                android:layout_weight="1"/>
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="평가"
+                android:layout_weight="1"
+                android:id="@+id/rbStar"/>
         </RadioGroup>
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="10dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="평가"
-            android:textSize="20sp"/>
-
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center">
+            android:layout_marginTop="10dp">
 
-            <RatingBar
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:numStars="5"
-                android:stepSize="1"
-                android:layout_margin="10dp"
-                android:id="@+id/ratingBar" />
-        </LinearLayout>
+                android:id="@+id/llHashtag"
+                android:orientation="vertical"
+                android:visibility="invisible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="고백　　"
+                            android:layout_marginRight="10dp"
+                            android:id="@+id/chk1"
+                            android:layout_weight="1"/>
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="권태기　"
+                            android:layout_marginRight="10dp"
+                            android:id="@+id/chk2"
+                            android:layout_weight="1"/>
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="다툼　　"
+                            android:layout_marginRight="10dp"
+                            android:id="@+id/chk3"
+                            android:layout_weight="1"/>
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="데이트　"
+                            android:id="@+id/chk4"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="미련　　"
+                            android:layout_marginRight="10dp"
+                            android:id="@+id/chk5"
+                            android:layout_weight="1"/>
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="바람　　"
+                            android:layout_marginRight="10dp"
+                            android:id="@+id/chk6"
+                            android:layout_weight="1"/>
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="사과　　"
+                            android:layout_marginRight="10dp"
+                            android:id="@+id/chk7"
+                            android:layout_weight="1"/>
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="소개팅　"
+                            android:id="@+id/chk8"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="썸　　　"
+                            android:layout_marginRight="10dp"
+                            android:id="@+id/chk9"
+                            android:layout_weight="1"/>
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="이별　　"
+                            android:layout_marginRight="10dp"
+                            android:id="@+id/chk10"
+                            android:layout_weight="1"/>
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="짝사랑　"
+                            android:layout_marginRight="10dp"
+                            android:id="@+id/chk11"
+                            android:layout_weight="1"/>
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="첫사랑　"
+                            android:id="@+id/chk12"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/llGender"
+                android:visibility="invisible">
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:id="@+id/rgGen">
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="남"
+                        android:id="@+id/rbM"/>
+
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="여"
+                        android:layout_marginLeft="70dp"
+                        android:id="@+id/rbW"/>
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/llStar"
+                android:visibility="invisible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
+                    <RatingBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:numStars="5"
+                        android:stepSize="1"
+                        android:layout_margin="10dp"
+                        android:id="@+id/ratingBar" />
+                </LinearLayout>
+            </LinearLayout>
+        </FrameLayout>
+
     </LinearLayout>
 </LinearLayout>

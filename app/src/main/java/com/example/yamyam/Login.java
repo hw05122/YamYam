@@ -31,6 +31,8 @@ import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
     private Button btnLogin, btnRegister;
@@ -38,13 +40,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     private int loginCnt = 0;
     private double initTime, initTime2;
     private String userId, userPw;
-    public static String uName, uId, uPw, uYear, uMonth, uDay, uNick, uGen, uStar, uState, uHash1, uHash2, uHash3, uStop, uGrade;
+    public static String uName, uId, uPw, uYear, uMonth, uDay, uNick, uGen, uStar, uState, uHash1, uHash2, uHash3, uStop, uFavorites,uRoll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        setTitle("로그인");
+        setTitle("Login");
 
         etId = (EditText) findViewById(R.id.etId);
         etPw = (EditText) findViewById(R.id.etPw);
@@ -97,10 +99,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                                 uHash2 = jsonObject.getString("userHashtag2");
                                 uHash3 = jsonObject.getString("userHashtag3");
                                 uStop = jsonObject.getString("userStop");
-                                uGrade = jsonObject.getString("userGrade");
+                                uFavorites = jsonObject.getString("userFavorites");
+                                uRoll = jsonObject.getString("userRoll");
 
                                 Log.d("young", "받아온 아이디:" + uId + " 닉네임:" + uNick + " 정지:" + uStop);
-
                                 if (uStop.equals("o")) {
                                     Toast.makeText(getApplicationContext(), "정지된 회원입니다.", Toast.LENGTH_SHORT).show();
                                     adB.dismiss();
@@ -109,7 +111,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                                     Intent intent = new Intent(Login.this, Main.class);
                                     startActivity(intent);
                                     finish();
+
                                 }
+
                             } else { //로그인에 실패한 경우
                                 Toast.makeText(getApplicationContext(), "로그인에 실패하였습니다.", Toast.LENGTH_SHORT).show();
                                 loginCnt++;

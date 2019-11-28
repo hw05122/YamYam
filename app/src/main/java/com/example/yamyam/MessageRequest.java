@@ -14,12 +14,14 @@ public class MessageRequest extends StringRequest {
     final static private String URL = "https://jsu3229.cafe24.com/dbeditor/Message_yam.php";
     private Map<String, String> map;
 
-    public MessageRequest(String userFrom, String userTo, String Text, Response.Listener<String> listener){
+    public MessageRequest(String userFrom, String userTo, String Text, String userAccusation, String userInquiry, Response.Listener<String> listener){
         super(Method.POST, URL, listener, null);
         map = new HashMap<>();
         map.put("userFrom", userFrom);
         map.put("userTo", userTo);
         map.put("Text",Text);
+        map.put("userAccusation",userAccusation);
+        map.put("userInquiry",userInquiry);
     }
 
     @Override

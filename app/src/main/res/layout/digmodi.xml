@@ -118,7 +118,7 @@
                 <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="사랑　　"
+                    android:text="사과　　"
                     android:layout_marginRight="10dp"
                     android:id="@+id/chk7"
                     android:layout_weight="1"/>
@@ -126,7 +126,7 @@
                 <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="썸　　　"
+                    android:text="소개팅　"
                     android:id="@+id/chk8"
                     android:layout_weight="1"/>
             </LinearLayout>
@@ -140,7 +140,7 @@
                 <CheckBox
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="소개팅　"
+                    android:text="썸　　　"
                     android:layout_marginRight="10dp"
                     android:id="@+id/chk9"
                     android:layout_weight="1"/>

@@ -11,18 +11,18 @@
     <TextView
         android:id="@+id/tv_date"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@color/colorPrimaryDark"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:layout_gravity="center"
-        android:textSize="20sp"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp"
         />
 
     <GridView
         android:id="@+id/gridview"
         android:layout_width="match_parent"
-        android:layout_height="557dp"
-        android:layout_marginTop="0dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:background="#ffffff"
         android:listSelector="#FFB6C1"
@@ -32,18 +32,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@color/colorPrimaryDark">
+        android:background="@color/colorPrimary">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="오늘의 미션"
-            android:textSize="15dp"/>
+            android:textSize="17sp"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/txtMission"
-            android:textSize="20dp"/>
+            android:textSize="25dp"/>
     </LinearLayout>
 </LinearLayout>

@@ -37,7 +37,6 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 public class Setting extends AppCompatActivity implements View.OnClickListener {
-    private Switch swChat, swMsg;
     private Button btnLogout, btnEnd;
     private String userPw;
 
@@ -46,74 +45,6 @@ public class Setting extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         setTitle("설정");
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            NotificationChannel notificationChannel = new NotificationChannel("channel_id", "channel_name", NotificationManager.IMPORTANCE_DEFAULT);
-            notificationChannel.setDescription("알림 테스트");
-            notificationManager.createNotificationChannel(notificationChannel);
-
-        }
-
-        swChat = (Switch) findViewById(R.id.swChat);
-        swChat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        int importance = NotificationManager.IMPORTANCE_HIGH;
-                        String Noti_Channel_ID = "Noti1";
-                        String Noti_Channel_Group_ID = "Noti_Group1";
-
-                        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                        NotificationChannel notificationChannel = new NotificationChannel(Noti_Channel_ID, Noti_Channel_Group_ID, importance);
-
-                        if (notificationManager.getNotificationChannel(Noti_Channel_ID) != null) {//채널존재
-                        } else {//채널없어서 만듦
-                            notificationManager.createNotificationChannel(notificationChannel);
-                        }
-
-                        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), Noti_Channel_ID)
-                                .setLargeIcon(null).setSmallIcon(R.drawable.logo4)
-                                .setWhen(System.currentTimeMillis()).setShowWhen(true).
-                                        setAutoCancel(true).setPriority(NotificationCompat.PRIORITY_MAX)
-                                .setContentTitle("상담을 신청하였습니다");
-
-                        notificationManager.notify(0, builder.build());
-                    }
-                }
-            }
-        });
-
-        swMsg = (Switch) findViewById(R.id.swMsg);
-        swMsg.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        int importance = NotificationManager.IMPORTANCE_HIGH;
-                        String Noti_Channel_ID = "Noti2";
-                        String Noti_Channel_Group_ID = "Noti_Group2";
-
-                        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                        NotificationChannel notificationChannel = new NotificationChannel(Noti_Channel_ID, Noti_Channel_Group_ID, importance);
-
-                        if (notificationManager.getNotificationChannel(Noti_Channel_ID) != null) {//채널존재
-                        } else {//채널없어서 만듦
-                            notificationManager.createNotificationChannel(notificationChannel);
-                        }
-
-                        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), Noti_Channel_ID)
-                                .setLargeIcon(null).setSmallIcon(R.drawable.logo4)
-                                .setWhen(System.currentTimeMillis()).setShowWhen(true).
-                                        setAutoCancel(true).setPriority(NotificationCompat.PRIORITY_MAX)
-                                .setContentTitle("쪽지가 도착했습니다.");
-
-                        notificationManager.notify(0, builder.build());
-                    }
-                }
-            }
-        });
 
         btnLogout = (Button) findViewById(R.id.btnLogout);
         btnLogout.setOnClickListener(this);
@@ -173,7 +104,7 @@ public class Setting extends AppCompatActivity implements View.OnClickListener {
                                     }
                                 };
 
-                                EndRequest endRequest = new EndRequest(uId, uPw, responseListener);
+                                EndRequest endRequest = new EndRequest(uId, uPw,Login.uNick, responseListener);
                                 RequestQueue queue = Volley.newRequestQueue(Setting.this);
                                 queue.add(endRequest);
 

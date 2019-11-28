@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -47,6 +46,8 @@ public class Attendance extends AppCompatActivity {
     public static String TODAY, userDate, mission, day;
     private int continuityCnt;
     private boolean todayGetMission;
+    private static String point = "";
+    private static String showPoint = "";
 
     @Override
     protected void onCreate(Bundle saveInstanceState) {
@@ -128,7 +129,7 @@ public class Attendance extends AppCompatActivity {
         if (todayGetMission) {
             txtMission.setText(Main.mission);
         } else {
-            String[] missions = {"상담 1회 하기", "상담해주고 평가 4점이상 받기", "쪽지보내기"};
+            String[] missions = {"상담 1회 하기", "쪽지보내기"};
             int rand = (int) (Math.random() * 3);
             mission = missions[rand];
         }
@@ -250,6 +251,49 @@ public class Attendance extends AppCompatActivity {
                             if (!todayChk) {
                                 date += " " + TODAY;
                                 userDate = date;
+                                point = String.valueOf(100);
+                                showPoint = "출석체크 +100";
+
+                                Response.Listener<String> responseListener1 = new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        try {
+                                            JSONObject jsonObject = new JSONObject(response);
+                                            boolean success = jsonObject.getBoolean("success");
+                                            if (success) {
+                                                //Toast.makeText(getApplicationContext(), "포인트 추가 성공!!", Toast.LENGTH_SHORT).show();
+                                                Response.Listener<String> responseListener2 = new Response.Listener<String>() {
+                                                    @Override
+                                                    public void onResponse(String response) {
+                                                        try {
+                                                            JSONObject jsonObject = new JSONObject(response);
+                                                            boolean success = jsonObject.getBoolean("success");
+                                                            if (success) {
+                                                                //Toast.makeText(getApplicationContext(), "concat 성공!!", Toast.LENGTH_SHORT).show();
+                                                            } else {
+                                                                //Toast.makeText(getApplicationContext(), "concat 실패!!.", Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        } catch (JSONException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                    }
+                                                };
+                                                ShowPointRequest showPointRequest = new ShowPointRequest(showPoint, Login.uNick, responseListener2);
+                                                RequestQueue queue2 = Volley.newRequestQueue(Attendance.this);
+                                                queue2.add(showPointRequest);
+
+                                            } else {
+                                                //Toast.makeText(getApplicationContext(), "포인트 추가 실패!!.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                };
+                                PointAddRequest pointAddRequest = new PointAddRequest(point, Login.uNick, responseListener1);
+                                RequestQueue queue1 = Volley.newRequestQueue(Attendance.this);
+                                queue1.add(pointAddRequest);
+
 
                                 Response.Listener<String> responseListener = new Response.Listener<String>() {
                                     @Override
@@ -279,6 +323,48 @@ public class Attendance extends AppCompatActivity {
 
                         } else { //이때까지 출석한 적없음
                             userDate = TODAY;
+                            point = String.valueOf(100);
+                            showPoint = "출석체크 +100";
+
+                            Response.Listener<String> responseListener1 = new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    try {
+                                        JSONObject jsonObject = new JSONObject(response);
+                                        boolean success = jsonObject.getBoolean("success");
+                                        if (success) {
+                                            //Toast.makeText(getApplicationContext(), "포인트가 추가 성공!!", Toast.LENGTH_SHORT).show();
+                                            Response.Listener<String> responseListener2 = new Response.Listener<String>() {
+                                                @Override
+                                                public void onResponse(String response) {
+                                                    try {
+                                                        JSONObject jsonObject = new JSONObject(response);
+                                                        boolean success = jsonObject.getBoolean("success");
+                                                        if (success) {
+                                                            //Toast.makeText(getApplicationContext(), "concat 성공!!", Toast.LENGTH_SHORT).show();
+                                                        } else {
+                                                            //Toast.makeText(getApplicationContext(), "concat 실패!!.", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    } catch (JSONException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                }
+                                            };
+                                            ShowPointRequest showPointRequest = new ShowPointRequest(showPoint, Login.uNick, responseListener2);
+                                            RequestQueue queue2 = Volley.newRequestQueue(Attendance.this);
+                                            queue2.add(showPointRequest);
+
+                                        } else {
+                                            //Toast.makeText(getApplicationContext(), "포인트 추가 실패!!.", Toast.LENGTH_SHORT).show();
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            };
+                            PointAddRequest pointAddRequest = new PointAddRequest(point, Login.uNick, responseListener1);
+                            RequestQueue queue1 = Volley.newRequestQueue(Attendance.this);
+                            queue1.add(pointAddRequest);
 
                             Response.Listener<String> responseListener = new Response.Listener<String>() {
                                 @Override
